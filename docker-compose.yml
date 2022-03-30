@@ -1,0 +1,7 @@
+web:
+    build: .
+    command: python web1.py
+    ports:
+        - "80:80"
+    volumes:
+        - .:/app
