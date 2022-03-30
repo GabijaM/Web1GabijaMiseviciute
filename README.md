@@ -9,6 +9,7 @@
 ### POST
 #### To add new book to library
 #### To create new record in library, author, title, year and isbn are required. Author and title variables are strings, year and isbn are integers.
+#### If you want to create a book, you need to sent `post` request
 #### The request should look like this:
 ```
 {
@@ -48,6 +49,7 @@
 `http://localhost/api/bookList`
 * Get a book from library using id
 `http://localhost/api/bookList/<bookID>`
+#### If you want to get information, you need to sent `get` request
 ## Response:
 * On successful request, status `200` is returned
 * On failure, status `404` is returned
@@ -76,6 +78,7 @@
 
 ### DELETE
 #### To remove book by id
+#### If you want to remove a book, you need to sent `delete` request
 `http://localhost/api/bookList/<bookID>`
 
 ## Response:
