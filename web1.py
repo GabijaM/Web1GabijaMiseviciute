@@ -4,25 +4,25 @@ import json
 application = Flask(__name__)  
 
 books = [
-    {"id" : 0,
+    {"id" : 1,
     "author" : "J. K. Rowling",
     "title" : "Harry Potter and the Philosopher's stone",
     "year" : 1997,
     "isbn" : 9780590353403
     },
-    {"id" : 1,
+    {"id" : 2,
     "author" : "J. K. Rowling",
     "title" : "Harry Potter and the Chamber of secrets",
     "year" : 1998,
     "isbn" : 9788498387650
     },
-    {"id" : 2,
+    {"id" : 3,
     "author" : "Charles Dickens",
     "title" : "A tale of Two Cities",
     "year" : 1859,
     "isbn" : 9780721407104
     },
-    {"id" : 3,
+    {"id" : 4,
     "author" : "Antoine de Saint-Exupery",
     "title" : "The Little Prince",
     "year" : 1943,
@@ -31,7 +31,8 @@ books = [
 
 @application.route("/")
 def homePage():
-    return "<h1>Welcome to virtual library!</h1><a href='http://localhost:80/api/bookList'>To see all books</a>"
+    # return "<h1>Welcome to virtual library!</h1><a href='http://localhost:80/api/bookList'>To see all books</a>"
+    return "<h1>Welcome to virtual library!</h1><a href='http://127.0.0.1:80/api/bookList'>To see all books</a>"
 
 @application.route("/api/bookList", methods = ["GET", "POST"])
 def bookList():
@@ -51,6 +52,7 @@ def bookList():
     elif request.method == "POST":
         newRecord = request.get_json("force: True")
         if ("author" in newRecord) and ("title" in newRecord) and ("year" in newRecord) and ("isbn" in newRecord):
+            add = "{ author: " + newRecord["author"] + ", title: " + newRecord["title"] + ", year: " + str(newRecord["year"]) + ", isbn: " + str(newRecord["isbn"]) + "}"
             newBook = {
                 "id" : books[len(books)-1]["id"] + 1,
                 "author" : newRecord["author"],
@@ -59,10 +61,10 @@ def bookList():
                 "isbn" : newRecord["isbn"]
             }
             books.append(newBook)
-            return Response(json.dumps({"Success":"Book was added to http://localhost:80/api/bookList/"+str(books[len(books)-1]["id"])}), status=201, mimetype="application/json")
+            return Response((json.dumps({"Success":"Book was added; " + add})), status=201, headers={"location": "/api/bookList/"+str(books[len(books)-1]["id"])}, mimetype="application/json")
 
         else:
-            error = "This data have not been given: "
+            error = "This data has not been given: "
             if "author" not in newRecord:
                 error += "author; "
             if "title" not in newRecord:
@@ -70,7 +72,7 @@ def bookList():
             if "year" not in newRecord:
                 error += "year; "
             if "isbn" not in newRecord:
-                error += "isbn"
+                error += "isbn."
             return Response(json.dumps({"Failure" : error}),status=400,mimetype="application/json")
 
 
@@ -91,18 +93,23 @@ def bookListID(bookID):
 
         update = "This data have been changed: "
         if "author" in updateBook:
+            update += "AUTHOR: [" + book[0]["author"] + "] -> ["
             book[0]["author"] = updateBook["author"]
-            update += "author; "
+            update += book[0]["author"] + "]; "
         if "title" in updateBook:
+            update += "TITLE: [" + book[0]["title"] + "] -> ["
             book[0]["title"] = updateBook["title"]
-            update += "title; "
+            update += book[0]["title"] + "]; "
         if "year" in updateBook:
+            update += "YEAR: [" + str(book[0]["year"]) + "] -> ["
             book[0]["year"] = updateBook["year"]
-            update += "year; "
+            update += str(book[0]["year"]) + "]; "
         if "isbn" in updateBook:
+            update += "ISBN: [" + str(book[0]["isbn"]) + "] -> ["
             book[0]["isbn"] = updateBook["isbn"]
-            update += "isbn"
-        return Response(json.dumps({"Success" : update}),status=201,mimetype="application/json")
+            update += str(book[0]["isbn"]) + "]; "
+
+        return Response(json.dumps({"Success" : update}),status=200,mimetype="application/json")
 
     elif request.method == "DELETE":
         for bookDEL in books:

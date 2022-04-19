@@ -9,7 +9,6 @@
 ### POST
 #### To add new book to library
 #### To create new record in library, author, title, year and isbn are required. Author and title variables are strings, year and isbn are integers.
-#### If you want to create a book, you need to sent `post` request
 #### The request should look like this:
 ```
 {
@@ -32,24 +31,23 @@
 #### An example:
 ```
 {
-"author" : "Michael P. Papazoglou",
-"title" : "Web Services: Principles and Technology",
-"year" : 2007,
-"isbn" : 0321155556
+    "author" : "Michael P. Papazoglou",
+    "title" : "Web Services: Principles and Technology",
+    "year" : 2007,
+    "isbn" : 321155556
 }
 ```
 ## Response:
-* On successful request, status `201` and address to new record are returned
+* On successful request, status `201` and new record data are returned
 * On failure, status `400` is returned
 
 
 ### GET
 #### There are two actions:
 * Get all the books in library
-`http://localhost/api/bookList`
+`http://localhost/api/bookList/`
 * Get a book from library using id
 `http://localhost/api/bookList/<bookID>`
-#### If you want to get information, you need to sent `get` request
 ## Response:
 * On successful request, status `200` is returned
 * On failure, status `404` is returned
@@ -72,15 +70,14 @@
 }
 ```
 ## Response:
-* On successful request, status `201` is returned
+* On successful request, status `200` is returned
 * On failure, status `400` is returned
 
 
 ### DELETE
 #### To remove book by id
-#### If you want to remove a book, you need to sent `delete` request
-`http://localhost/api/bookList/<bookID>`
+`http://127.0.0.1/api/bookList/<bookID>`
 
 ## Response:
-* On successful request, status `204` is returned
+* On successful request, status `204` is returned and changed data are returned
 * On failure, status `404` is returned
