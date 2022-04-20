@@ -9,6 +9,7 @@
 ### POST
 #### To add new book to library
 #### To create new record in library, author, title, year and isbn are required. Author and title variables are strings, year and isbn are integers.
+#### If you want to create a book, you need to sent `post` request
 #### The request should look like this:
 ```
 {
